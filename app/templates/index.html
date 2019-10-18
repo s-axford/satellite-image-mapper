@@ -1,0 +1,26 @@
+<html>
+    <head>
+    <link rel="stylesheet" type="text/css" href="/static/style.css"/>
+    </head>
+    
+    <body>
+    <h2>Input Location and Satellite Image</h2>
+    <form action="{{ url_for('handle_data') }}" method="post" enctype='multipart/form-data'>
+        Latitude:<br>
+        <input type="text" name="lat" value="45.516884"><br>
+        Longitude:<br>
+        <input type="text" name="long" value="-73.578823">
+        <br>
+        <input type="file" name="file" accept="image/png">
+        <br>
+        <input type="submit" value="Submit">
+        <h3>{{ error }}</h3>
+    </form> 
+    {% if image_created %}
+        <h2>Image</h2>
+        <p>Current Latitude: {{ lat }}</p>
+        <p>Current Longitude: {{ long }}</p>
+        <img src={{ img }}></img>
+    {% endif %}
+    </body>
+</html>
