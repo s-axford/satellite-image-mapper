@@ -106,8 +106,8 @@ def generate_overlay_image(latitude, longitude, file):
 
 @app.route('/')
 def index():
-    # default route
-    return render_template('index.html')
+    # default route with GHGSat Montreal office cordinates as defaults
+    return render_template('index.html', lat="45.5168", long="-73.5788")
 
 
 @app.route('/', methods=['POST'])
@@ -122,7 +122,7 @@ def handle_data():
     # check if the post request has files
     if 'file' not in request.files:
         print('No file portion of request')
-        return render_template('index.html')
+        return render_template('index.html', lat=latitude, long=longitude)
     file = request.files['file']
     print(file)
 
@@ -132,11 +132,11 @@ def handle_data():
     # user did not input a file
     except FileNotFoundError as error:
         print(error)
-        return render_template('index.html', error='Must Select File')
+        return render_template('index.html', error='Must Select File', lat=latitude, long=longitude)
     # user inputted a file that does not conform to API
     except TypeError as error:
         print(error)
-        return render_template('index.html', error='File Not Valid')
+        return render_template('index.html', error='File Not Valid', lat=latitude, long=longitude)
 
     return render_template(
         'index.html',

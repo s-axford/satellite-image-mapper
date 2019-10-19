@@ -9,9 +9,9 @@
     <h2>Update Image</h2>
     <form action="{{ url_for('handle_data') }}" method="post" enctype='multipart/form-data'>
         Latitude:<br>
-        <input type="text" name="lat" value="45.516884" max="90" min="-90"><br>
+        <input type="number" name="lat" value="{{ lat }}" max="90" min="-90" step=".0001"><br>
         Longitude:<br>
-        <input type="text" name="long" value="-73.578823" max="180" min="-180">
+        <input type="number" name="long" value="{{ long }}" max="180" min="-180" step=".0001">
         Overlay image:<br>
         <input type="file" name="file" accept="image/png">
         <br>
@@ -22,8 +22,11 @@
     <div id="main">
     <button id="togglebtn" onclick="toggleNav()">&#171;</button>
     {% if image_created %}
+        <h3>Satellite Overlay Image:</h3>
         <p>Latitude: {{ lat }} Longitude: {{ long }}</p>
         <img id="mainimage" onclick="expandImage()" class="" src={{url_for('static', filename=filename)}}></img>
+        <div id='cover'>
+        </div>
     {% endif %}
     </div>
     </body>

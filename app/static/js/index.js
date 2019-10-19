@@ -20,4 +20,6 @@ function toggleNav() {
 function expandImage() {
     var image = document.getElementById("mainimage");
     image.classList.toggle("expanded");
+    var cover = document.getElementById("cover");
+    cover.classList.toggle("active");
 }
