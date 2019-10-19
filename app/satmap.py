@@ -34,7 +34,7 @@ def allowed_file(filename):
 
 def generate_overlay_image(latitude, longitude, file):
     # center defines the center of the map
-    center = latitude + "," + longitude
+    center = "{},{}".format(latitude, longitude)
 
     # if user does not select file, browser also
     # submit an empty part without filename
@@ -104,6 +104,7 @@ def handle_data():
         print('No file portion of request')
         return render_template('index.html')
     file = request.files['file']
+    print(file)
 
     # try to get filename of overlayed imaged
     try:

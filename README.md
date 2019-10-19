@@ -1,5 +1,5 @@
 # Satellite Image Mapper
-## Build and Run Using Docker
+## Build and Run using Docker
 Build the image:
 ```
 docker build -t satmap:latest .
@@ -15,7 +15,7 @@ Generated satellite image files can be obtained via the satmap API using a multi
 Form data should include:
 ```
 lat: Latitude of desired location (-90 to 90)
-long: Longitude of desured location (-180 to 180)
+long: Longitude of desired location (-180 to 180)
 file: local filepath of png image containing overlay
 ```
 cURL Example:
@@ -26,5 +26,18 @@ curl -X GET http://localhost:3000/satmap/api/v1.0/generate
 boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'   
 -F lat=45.516884   
 -F long=-73.578823   
--F file=@{PATH_TO_FILE}/plume.png -o response.png
+-F file=@{PATH_TO_IMAGES_FOLDER}/plume.png -o response.png
+```
+## Unit Tests
+Unit tests can be run on the API to confirm functionality
+
+To run all unit tests, run the following command in the app/ directory:
+```
+python3 -m unittest discover
+```
+To evaluate satmap test coverage, install coverage package, run the unit tests, and generate a report:
+```
+pip3 install coverage
+coverage run test_satmap.py
+coverage report test_satmap.py
 ```
