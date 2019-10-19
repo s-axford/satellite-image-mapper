@@ -7,19 +7,21 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
+# file extensions that are allowed by the file form fields
 ALLOWED_EXTENSIONS = set(['png'])
 
+# directory setup for easy referencing
 cur_path = os.path.dirname(__file__)
-UPLOAD_FOLDER = os.path.join(cur_path, 'images')
+UPLOAD_FOLDER = os.path.join(cur_path, 'static/images')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # google maps API key
 api_key = 'AIzaSyAwFrztsxrcARTjOhchUXuCunYiC3e2WJ4'
 
-# url variable store url 
+# url variable store url
 gmaps_url = "https://maps.googleapis.com/maps/api/staticmap?"
-   
-# zoom defines the zoom level of the map 
+
+# zoom defines the zoom level of the map
 # roughly 10km x 5km in Montreal Latitude
 # TODO provide better calculation for zoom level
 zoom = 13
@@ -27,12 +29,14 @@ zoom = 13
 # checks if uploaded file is of allowed extension type
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS 
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
+# default route
 @app.route('/')
 def index():
-    return render_template('index.html') 
+    return render_template('index.html')
 
+# default route post handler for form data
 @app.route('/', methods=['POST'])
 def handle_data():
     # get lat long
@@ -63,34 +67,49 @@ def handle_data():
     else:
         filename = secure_filename(file.filename)
         print(file)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))    
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
     # get url to image of lat long specified location from google maps api
     map_image = requests.get(gmaps_url + "center=" + center + "&zoom=" +
-                str(zoom) + "&size=640x320&key=" +
-                api_key + "&sensor=false")
-    
+                             str(zoom) + "&size=514x257&key=" +
+                             api_key + "&sensor=false" + "&maptype=satellite")
+
     # save map file to images folder
-    f = open(os.path.join(app.config['UPLOAD_FOLDER'], "map.png"), 'wb') 
-    f.write(map_image.content) 
-    f.close() 
+    f = open(os.path.join(app.config['UPLOAD_FOLDER'], "map.png"), 'wb')
+    f.write(map_image.content)
+    f.close()
 
-    background = Image.open(os.path.join(app.config['UPLOAD_FOLDER'], "map.png"))
-    overlay = Image.open(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
+    # open both files as Image objects
+    background = Image.open(
+        os.path.join(
+            app.config['UPLOAD_FOLDER'],
+            "map.png"))
+    overlay = Image.open(
+        os.path.join(
+            app.config['UPLOAD_FOLDER'],
+            file.filename))
 
+    # maintain alpha channels
     background = background.convert("RGBA")
     overlay = overlay.convert("RGBA")
 
-    new_img = Image.alpha_composite(background, overlay)
-    new_img.save(os.path.join(app.config['UPLOAD_FOLDER'], 'overlay.png'))
+    # generate informative name for new file
+    new_img_filename = os.path.splitext(
+        filename)[0] + '-' + latitude + "-" + longitude + ".png"
 
-    # get url to image of lat long specified location from google maps api
-    sat_image_url = (gmaps_url + "center=" + center + "&zoom=" +
-                str(zoom) + "&size=640x320&key=" +
-                api_key + "&sensor=false")
-    
-    
-    return render_template('index.html', lat=latitude, long=longitude, image_created='true', img='../images/overlay.png')
+    # overlay uploaded image on top of gmaps image
+    new_img = Image.alpha_composite(background, overlay)
+    new_img.save(os.path.join(app.config['UPLOAD_FOLDER'], new_img_filename))
+
+    return render_template(
+        'index.html',
+        lat=latitude,
+        long=longitude,
+        image_created='true',
+        filename=(
+            'images/' +
+            new_img_filename))
+
 
 if __name__ == '__main__':
-    app.run(host = '0.0.0.0', port = 3000)
+    app.run(host='0.0.0.0', port=3000)

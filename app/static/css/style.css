@@ -1,0 +1,81 @@
+body {
+    background: lightgray;
+}
+
+form {
+    color: whitesmoke;
+}
+
+input {
+    margin-bottom: 10px;
+}
+
+.expanded {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-height: 100%;
+    margin: auto;
+    overflow: auto;
+    z-index: 2;
+    cursor: -moz-zoom-out !important; 
+    cursor: -webkit-zoom-out !important; 
+    cursor: zoom-out !important;
+}
+
+#mainimage {
+    cursor: -moz-zoom-in; 
+    cursor: -webkit-zoom-in; 
+    cursor: zoom-in;
+}
+
+#sidebar h2 {
+    color: white;
+}
+
+#sidebar h3 {
+  color: whitesmoke;
+}
+
+#sidebar {
+    height: 100%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    overflow-x: hidden;
+    padding: 0 20px;
+    border-top: 30px solid darkgreen;
+    background: #202020;
+    width: 160px;
+    transition: 0.5s;
+}
+
+#togglebtn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #111;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    margin-left: -10px;
+    margin-bottom: 10px;
+}
+
+#togglebtn:hover {
+    background-color: #444;
+}
+
+#main {
+    transition: margin-left .5s;
+    margin-top: 20px;
+    margin-left: 200px;
+}
+
+#app {
+    color: black;
+    opacity: 50%;
+}
