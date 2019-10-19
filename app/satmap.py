@@ -118,6 +118,11 @@ def handle_data():
     latitude = request.form['lat']
     longitude = request.form['long']
 
+    # check if cordinates are valid
+    if (not (-90 <= float(latitude) <= 90) or not (-180 <= float(longitude) <= 180 )):
+        print('Cordinates not valid')
+        return render_template('index.html', lat=latitude, long=longitude)
+
     # get uploaded file
     # check if the post request has files
     if 'file' not in request.files:
@@ -186,11 +191,16 @@ def generate_image():
     latitude = request.form['lat']
     longitude = request.form['long']
 
+    # check if cordinates are valid
+    if (not (-90 <= float(latitude) <= 90) or not (-180 <= float(longitude) <= 180 )):
+        print('Cordinates not valid')
+        return jsonify({'error': 'Cordinates Not Valid'})
+    
     # get uploaded file
     # check if the post request has files
     if 'file' not in request.files:
         print('No file portion of request')
-        return jsonify({'error': 'No file portion of request'})
+        return jsonify({'error': 'No File Attached'})
     file = request.files['file']
 
     # try to get filename of overlayed imaged

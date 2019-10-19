@@ -83,7 +83,7 @@ class FlaskTestCase(unittest.TestCase):
         )
         buffer.close()
         # ensure proper error was returned
-        self.assertEqual(response.data, b'{"error":"File Not Valid"}\n')
+        self.assertEqual(response.data, b'{\n  "error": "File Not Valid"\n}\n')
         # ensure valid request returns success response
         self.assertEqual(response.status_code, 200)
         response.close()
@@ -98,11 +98,38 @@ class FlaskTestCase(unittest.TestCase):
             content_type='multipart/form-data'
         )
         # ensure proper error was returned
-        self.assertEqual(response.data, b'{"error":"No file portion of request"}\n')
+        self.assertEqual(response.data, b'{\n  "error": "No File Attached"\n}\n')
         # esure valid request returns success response
         self.assertEqual(response.status_code, 200)
         response.close()
 
+    # tests invalid API GET request when no cordinates are incorrect
+    def test_invalid_cordinates_upload(self):
+        """no test file uploaded"""
+        # check incorrect longitude
+        data = {'lat': 90, 'long': -300}
+        data = {key: str(value) for key, value in data.items()}
+        response = self.app.get(
+            '/satmap/api/v1.0/generate', data=data,
+            content_type='multipart/form-data'
+        )
+        # ensure proper error was returned
+        self.assertEqual(response.data,  b'{\n  "error": "Cordinates Not Valid"\n}\n')
+        # esure valid request returns success response
+        self.assertEqual(response.status_code, 200)
+        response.close()
+        # check incorrect latitude
+        data = {'lat': 400, 'long': -10}
+        data = {key: str(value) for key, value in data.items()}
+        response = self.app.get(
+            '/satmap/api/v1.0/generate', data=data,
+            content_type='multipart/form-data'
+        )
+        # ensure proper error was returned
+        self.assertEqual(response.data,  b'{\n  "error": "Cordinates Not Valid"\n}\n')
+        # esure valid request returns success response
+        self.assertEqual(response.status_code, 200)
+        response.close()
 
 if __name__ == "__main__":
     unittest.main()

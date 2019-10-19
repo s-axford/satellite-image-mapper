@@ -24,8 +24,8 @@ curl -X GET http://localhost:3000/satmap/api/v1.0/generate
 -H 'Content-Type: multipart/form-data'   
 -H 'content-type: multipart/form-data; 
 boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'   
--F lat=45.516884   
--F long=-73.578823   
+-F lat=45.5168
+-F long=-73.5788
 -F file=@{PATH_TO_IMAGES_FOLDER}/plume.png -o response.png
 ```
 ## Unit Tests
