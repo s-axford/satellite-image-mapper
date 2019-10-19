@@ -41,3 +41,18 @@ pip3 install coverage
 coverage run test_satmap.py
 coverage report test_satmap.py
 ```
+
+## Generating Sphinx Documentation
+First install Sphinx for your operating system, instructions can be found in the [Sphinx documentation](http://www.sphinx-doc.org/en/master/usage/installation.html "Sphinx Installation")
+
+Once Sphinx is installed the documentation can be generated using the Makefile in the doc/ directory
+
+To generate the documentation as an html page enter the doc/ directory and run:
+```
+make html
+```
+Other documentations form factors can be generated similarly:
+```
+make {text || latex || xml || ..etc}
+```
+For more information on possible Sphinx documentation types refer to the [Sphinx build documentation](http://www.sphinx-doc.org/en/master/man/sphinx-build.html "sphinx-build")

@@ -1,3 +1,8 @@
+"""
+.. module:: satmap
+   :synopsis: All endpoints of the SatMap API are defined here
+.. moduleauthor:: Spencer Axford
+"""
 import os
 import requests
 import googlemaps
@@ -26,13 +31,25 @@ gmaps_url = "https://maps.googleapis.com/maps/api/staticmap?"
 # TODO provide better calculation for zoom level
 zoom = 13
 
-# checks if uploaded file is of allowed extension type
+
 def allowed_file(filename):
+    # checks if uploaded file is of allowed extension type
+    # filename: string representing filename
+    # returns boolean
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
 def generate_overlay_image(latitude, longitude, file):
+    # fetchs static satellite image at specified latitude and longitude
+    # overlays given werkzeug file object on satellite image
+    # saves new file to static/images and returns filename
+    # latitude: number (between -90 and 90) latitude for center of image
+    # longitude: number (between -180 and 180) longitude for center of image
+    # file: werkzeug file object (image/png) that will be overlayed on google maps image
+    # returns filename of new image stored in static/images, or throws
+    # exception
+
     # center defines the center of the map
     center = "{},{}".format(latitude, longitude)
 
@@ -86,14 +103,17 @@ def generate_overlay_image(latitude, longitude, file):
 
     return new_img_filename
 
-# default route
+
 @app.route('/')
 def index():
+    # default route
     return render_template('index.html')
 
-# default route post handler for form data
+
 @app.route('/', methods=['POST'])
 def handle_data():
+    # default route POST handler for form data
+
     # get lat long
     latitude = request.form['lat']
     longitude = request.form['long']
@@ -130,6 +150,38 @@ def handle_data():
 
 @app.route('/satmap/api/v1.0/generate', methods=['GET'])
 def generate_image():
+    # SatMap API which collects a longitude, latitude and png image
+    # returns new image of request image overlayed with google maps static
+    # image at given cordinates
+    """
+        **Generate Satellite Image File**
+
+        This function allows users to upload and image with latitude and longitude information
+
+        :return: uploaded image overlayed a static google maps api image taken at specified cordinates
+
+        - Example::
+
+            curl -X GET http://localhost:{specified_port}/satmap/api/v1.0/generate
+
+            -H 'Content-Type: multipart/form-data'
+
+            -H 'content-type: multipart/form-data;
+
+            boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'
+
+            -F lat=45.516884
+
+            -F long=-73.578823
+
+            -F file=@{PATH_TO_IMAGES_FOLDER}/plume.png -o response.png
+
+        - Expected Success Response::
+
+            HTTP Status Code: 200
+
+            body: image/png
+    """
     # get lat long
     latitude = request.form['lat']
     longitude = request.form['long']

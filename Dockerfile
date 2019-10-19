@@ -21,4 +21,4 @@ WORKDIR /app
 
 #run flask app
 ENTRYPOINT ["python3"]
-CMD ["__init__.py"]
+CMD ["satmap.py"]
