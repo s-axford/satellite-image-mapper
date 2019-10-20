@@ -66,6 +66,7 @@ input {
 #sidebar h3 {
   color: whitesmoke;
   font-family: "Gentium Book Basic", Cambria, Georgia, Times, serif;
+  font-size: medium;
 }
 
 #sidebar {

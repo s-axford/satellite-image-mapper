@@ -12,7 +12,7 @@
         <input type="number" name="lat" value="{{ lat }}" max="90" min="-90" step=".0001"><br>
         Longitude:<br>
         <input type="number" name="long" value="{{ long }}" max="180" min="-180" step=".0001">
-        Overlay image:<br>
+        Emissions Image:<br>
         <input type="file" name="file" accept="image/png">
         <br>
         <input type="submit" value="Submit">
@@ -22,7 +22,7 @@
     <div id="main">
     <button id="togglebtn" onclick="toggleNav()">&#171;</button>
     {% if image_created %}
-        <h3>Satellite Overlay Image:</h3>
+        <h3>Satellite - Emissions Composite Image:</h3>
         <p>Latitude: {{ lat }} Longitude: {{ long }}</p>
         <img id="mainimage" onclick="expandImage()" class="" src={{url_for('static', filename=filename)}}></img>
         <div id='cover'>

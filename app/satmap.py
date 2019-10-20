@@ -61,8 +61,8 @@ def generate_overlay_image(latitude, longitude, file):
 
     # ensures file is a png of proper format
     if not file or not allowed_file(file.filename):
-        print('File not valid')
-        raise TypeError('File Not Valid')
+        print('File Not Valid - File Wrong Format')
+        raise TypeError('File Not Valid - File Wrong Format')
     else:
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['IMAGES_FOLDER'], filename))
@@ -86,6 +86,12 @@ def generate_overlay_image(latitude, longitude, file):
         os.path.join(
             app.config['IMAGES_FOLDER'],
             filename))
+
+    # ensure file dimensions are as specifed in design challenge documentation
+    width, height = overlay.size
+    if (width != 514 or height != 257):
+        print('File Not Valid - Incorrect Dimensions')
+        raise TypeError('File Not Valid - Incorrect Dimensions')
 
     # maintain alpha channels
     background = background.convert("RGBA")
@@ -119,7 +125,8 @@ def handle_data():
     longitude = request.form['long']
 
     # check if cordinates are valid
-    if (not (-90 <= float(latitude) <= 90) or not (-180 <= float(longitude) <= 180 )):
+    if (not (-90 <= float(latitude) <= 90)
+            or not (-180 <= float(longitude) <= 180)):
         print('Cordinates not valid')
         return render_template('index.html', lat=latitude, long=longitude)
 
@@ -137,11 +144,19 @@ def handle_data():
     # user did not input a file
     except FileNotFoundError as error:
         print(error)
-        return render_template('index.html', error='Must Select File', lat=latitude, long=longitude)
+        return render_template(
+            'index.html',
+            error='Must Select File',
+            lat=latitude,
+            long=longitude)
     # user inputted a file that does not conform to API
     except TypeError as error:
         print(error)
-        return render_template('index.html', error='File Not Valid', lat=latitude, long=longitude)
+        return render_template(
+            'index.html',
+            error='File Not Valid - file must be png with dimensions 514px x 257px',
+            lat=latitude,
+            long=longitude)
 
     return render_template(
         'index.html',
@@ -192,10 +207,11 @@ def generate_image():
     longitude = request.form['long']
 
     # check if cordinates are valid
-    if (not (-90 <= float(latitude) <= 90) or not (-180 <= float(longitude) <= 180 )):
+    if (not (-90 <= float(latitude) <= 90)
+            or not (-180 <= float(longitude) <= 180)):
         print('Cordinates not valid')
         return jsonify({'error': 'Cordinates Not Valid'})
-    
+
     # get uploaded file
     # check if the post request has files
     if 'file' not in request.files:
