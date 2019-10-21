@@ -20,7 +20,7 @@ file: local filepath of png image containing overlay
 ```
 cURL Example:
 ```
-curl -X GET http://localhost:3000/satmap/api/v1.0/generate   
+curl -X GET http://localhost:${desired host port}/satmap/api/v1.0/generate   
 -H 'Content-Type: multipart/form-data'   
 -H 'content-type: multipart/form-data; 
 boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'   
@@ -35,7 +35,7 @@ To run all unit tests, run the following command in the app/ directory:
 ```
 python3 -m unittest discover
 ```
-To evaluate satmap test coverage, install coverage package, run the unit tests, and generate a report:
+To evaluate satmap test coverage, install coverage package, run the unit tests, and generate a report in the app/ directory:
 ```
 pip3 install coverage
 coverage run test_satmap.py
