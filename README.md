@@ -51,7 +51,7 @@ First install Sphinx for your operating system, instructions can be found in the
 
 Once Sphinx is installed the documentation can be generated using the Makefile in the doc/ directory
 
-To generate the documentation as an html page enter the doc/ directory and run:
+To generate the documentation as an html page enter the docs/ directory and run:
 ```
 make html
 ```
@@ -59,4 +59,7 @@ Other documentations form factors can be generated similarly:
 ```
 make {text || latex || xml || ..etc}
 ```
+
+Sphinx build in the desired format will be added to the docs/build directory. For HTML open docs/build/html/index.html file to view documentation.
+
 For more information on possible Sphinx documentation types refer to the [Sphinx build documentation](http://www.sphinx-doc.org/en/master/man/sphinx-build.html "sphinx-build")
