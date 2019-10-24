@@ -83,7 +83,8 @@ class FlaskTestCase(unittest.TestCase):
         )
         buffer.close()
         # ensure proper error was returned
-        self.assertEqual(response.data, b'{\n  "error": "File Not Valid"\n}\n')
+        self.assertIn(b'"error"', response.data)
+        self.assertIn(b'"File Not Valid"', response.data)
         # ensure valid request returns success response
         self.assertEqual(response.status_code, 200)
         response.close()
@@ -98,7 +99,8 @@ class FlaskTestCase(unittest.TestCase):
             content_type='multipart/form-data'
         )
         # ensure proper error was returned
-        self.assertEqual(response.data, b'{\n  "error": "No File Attached"\n}\n')
+        self.assertIn(b'"error"', response.data)
+        self.assertIn(b'"No File Attached"', response.data)
         # esure valid request returns success response
         self.assertEqual(response.status_code, 200)
         response.close()
@@ -114,7 +116,8 @@ class FlaskTestCase(unittest.TestCase):
             content_type='multipart/form-data'
         )
         # ensure proper error was returned
-        self.assertEqual(response.data,  b'{\n  "error": "Cordinates Not Valid"\n}\n')
+        self.assertIn(b'"error"', response.data)
+        self.assertIn(b'Cordinates Not Valid', response.data)
         # esure valid request returns success response
         self.assertEqual(response.status_code, 200)
         response.close()
@@ -126,7 +129,8 @@ class FlaskTestCase(unittest.TestCase):
             content_type='multipart/form-data'
         )
         # ensure proper error was returned
-        self.assertEqual(response.data,  b'{\n  "error": "Cordinates Not Valid"\n}\n')
+        self.assertIn(b'"error"', response.data)
+        self.assertIn(b'Cordinates Not Valid', response.data)
         # esure valid request returns success response
         self.assertEqual(response.status_code, 200)
         response.close()
