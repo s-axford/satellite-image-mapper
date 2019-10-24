@@ -31,6 +31,10 @@ boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'
 ## Unit Tests
 Unit tests can be run on the API to confirm functionality
 
+First ensure all dependencies are installed with pip by running the following command in the root directory:
+```
+pip3 install -r requirements.txt
+```
 To run all unit tests, run the following command in the app/ directory:
 ```
 python3 -m unittest discover
@@ -38,8 +42,8 @@ python3 -m unittest discover
 To evaluate satmap test coverage, install coverage package, run the unit tests, and generate a report in the app/ directory:
 ```
 pip3 install coverage
-coverage run test_satmap.py
-coverage report test_satmap.py
+python3 -m coverage run test_satmap.py
+python3 -m coverage report test_satmap.py
 ```
 
 ## Generating Sphinx Documentation
